@@ -8,7 +8,7 @@ var height = 700 - (margin.top + margin. bottom);
 var t = d3.transition().duration(100); // D3 transition
 var flag = 0;
 var time = 0;
-
+var continen = ["europe", "asia", "americas", "africa"];
 var g = d3.select("#chart-area")
     .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -108,7 +108,35 @@ function update(data){
     var circles = g.selectAll("circle").data(data, function(d){
         return d.country;
     });
-
+    g.selectAll("myDots")
+        .data(continen)
+        .enter()
+        .append("rect")
+        .attr("x",width - 100)
+        .attr("y",function(d,i){
+            return (height - 150) + i*25;
+        })
+        .attr("width",17)
+        .attr("height",17)
+        .style("fill",function(d){
+            return continentColor(d);
+        })
+    g.selectAll("mylabels")
+        .data(continen)
+        .enter()
+        .append("text")
+            .attr("x", (width - 100) + 20.5)
+            .attr("y", function(d,i){
+                return (height - 140) + i*25;
+            })
+            .style("fill", function(d){
+                return continentColor(d);
+            })
+            .text(function(d){
+                return d;
+            })
+            .attr("text-anchor","left")
+            .style("alignment-baseline","middle")
     // xAxisGroup.transition(t).call(xAxisCall);
     // yAxisGroup.transition(t).call(yAxisCall);
 
