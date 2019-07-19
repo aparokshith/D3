@@ -8,6 +8,13 @@ var height = 700 - (margin.top + margin. bottom);
 var t = d3.transition().duration(100); // D3 transition
 var flag = 0;
 var time = 0;
+//Tool-Tip init
+tip = d3.tip().attr('class','d3-tip').html(function(d){
+    // return d;
+    var text  = "<strong>Country:</strong> <span stylr=' color:red'>" + d.country +"</span><br>";
+    text+= "<strong>Population:</strong> <span style='color:red'>"+d.population+"</span?<br>";
+    return text;
+});
 var continen = ["europe", "asia", "americas", "africa"];
 var g = d3.select("#chart-area")
     .append("svg")
@@ -15,7 +22,7 @@ var g = d3.select("#chart-area")
         .attr("height",height + margin.top+margin.bottom)
     .append("g")
         .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
-
+g.call(tip);
 var x = d3.scaleLog()
     .base(10)
     .range([0,width])
@@ -167,6 +174,8 @@ function update(data){
             .attr("fill", function(d){
                 return continentColor(d.continent);
             })
+            .on("mouseover",tip.show)
+            .on("mouseout",tip.hide)
         .transition(t)
             .attr("cx", function(d,i){
                 return(x(d.income));
